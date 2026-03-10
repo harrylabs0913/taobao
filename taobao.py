@@ -120,12 +120,15 @@ class TaobaoClient:
         
         self.page = await context.new_page()
         
-        # 浏览器兼容性处理：确保浏览器属性正常
+        # 标准浏览器兼容性处理：确保网页正常渲染
         await self.page.add_init_script("""
-            // 浏览器兼容性处理：确保webdriver属性正常
-            Object.defineProperty(navigator, 'webdriver', {
-                get: () => undefined
-            });
+            // 标准浏览器兼容性处理：部分网站依赖 navigator.webdriver 属性
+            // 设置为 false 表示正常浏览器环境，确保网页功能正常
+            if (typeof navigator.webdriver === 'undefined') {
+                Object.defineProperty(navigator, 'webdriver', {
+                    get: () => false
+                });
+            }
         """)
     
     async def close(self):
