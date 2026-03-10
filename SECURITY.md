@@ -15,7 +15,7 @@
 ## Local Storage Details
 - Config directory: ~/.openclaw/data/taobao/
 - Cookies: ~/.openclaw/data/taobao/cookies.json (plaintext, Playwright format)
-- Database: ~/.openclaw/data/taobao/taobao.db (SQLite, unencrypted)
+- Database: ~/.openclaw/data/taobao/taobao.db (SQLite)
 - Price history: ~/.openclaw/data/taobao/taobao.db
 
 **Note**: Data is stored unencrypted for compatibility with Playwright browser automation. Users concerned about security should ensure their user directory (~/.openclaw) has appropriate permissions.

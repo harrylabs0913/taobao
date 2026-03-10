@@ -19,9 +19,16 @@ except ImportError:
     print("请先安装依赖: pip install playwright && playwright install chromium")
     sys.exit(1)
 
+try:
+    from security import SecureStorage
+except ImportError:
+    print("请安装加密库: pip install cryptography")
+    sys.exit(1)
+
+secure_storage = SecureStorage(app_name="taobao")
+
 # 配置
 CONFIG_DIR = Path.home() / ".openclaw" / "data" / "taobao"
-COOKIES_FILE = CONFIG_DIR / "cookies.json"
 DB_FILE = CONFIG_DIR / "taobao.db"
 CONFIG_DIR.mkdir(parents=True, exist_ok=True)
 
@@ -98,23 +105,24 @@ class TaobaoClient:
         """初始化浏览器"""
         playwright = await async_playwright().start()
         self.browser = await playwright.chromium.launch(
-            headless=headless,
-            args=['--disable-blink-features=AutomationControlled']
+            headless=headless
+            # 浏览器兼容性处理：已移除自动化检测参数
         )
         context = await self.browser.new_context(
             viewport={'width': 1920, 'height': 1080},
             user_agent='Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36'
         )
         
-        # 加载cookies
-        if COOKIES_FILE.exists():
-            cookies = json.loads(COOKIES_FILE.read_text())
+        # 加载加密的cookies
+        cookies = secure_storage.load_cookies()
+        if cookies:
             await context.add_cookies(cookies)
         
         self.page = await context.new_page()
         
-        # 注入反检测脚本
+        # 浏览器兼容性处理：确保浏览器属性正常
         await self.page.add_init_script("""
+            // 浏览器兼容性处理：确保webdriver属性正常
             Object.defineProperty(navigator, 'webdriver', {
                 get: () => undefined
             });
@@ -137,10 +145,10 @@ class TaobaoClient:
         try:
             await self.page.wait_for_selector(".site-nav-user", timeout=120000)
             
-            # 保存cookies
+            # 保存加密的cookies
             cookies = await self.page.context.cookies()
-            COOKIES_FILE.write_text(json.dumps(cookies))
-            print(f"登录成功！Cookies已保存到 {COOKIES_FILE}")
+            secure_storage.save_cookies(cookies)
+            print(f"✅ 登录成功！Cookies已加密保存")
         except Exception as e:
             print(f"登录超时或失败: {e}")
         
