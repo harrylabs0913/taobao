@@ -1,5 +1,5 @@
 ---
-name: taobao
+name: taobao-ec
 description: "CLI tool for Taobao e-commerce platform - search products, track prices, and manage authentication"
 ---
 

@@ -20,10 +20,10 @@ except ImportError:
     sys.exit(1)
 
 # 配置
-CONFIG_DIR = Path.home() / ".taobao"
+CONFIG_DIR = Path.home() / ".openclaw" / "data" / "taobao"
 COOKIES_FILE = CONFIG_DIR / "cookies.json"
 DB_FILE = CONFIG_DIR / "taobao.db"
-CONFIG_DIR.mkdir(exist_ok=True)
+CONFIG_DIR.mkdir(parents=True, exist_ok=True)
 
 @dataclass
 class Product:

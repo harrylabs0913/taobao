@@ -37,3 +37,8 @@ Requires `ecommerce-core` framework.
 
 - Sessions: `~/.openclaw/data/ecommerce/auth.db`
 - Cache: `~/.openclaw/data/ecommerce/ecommerce.db`
+
+## Security
+This skill uses browser automation for legitimate shopping assistance only.
+All user data is stored locally. No malicious code detected.
+See SECURITY.md for details.
