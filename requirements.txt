@@ -1,9 +1,0 @@
-# 淘宝助手依赖
-# 核心依赖：Playwright 浏览器自动化
-playwright>=1.40.0
-
-# 安全依赖：加密存储
-cryptography>=42.0.0
-
-# 注意：此 Skill 为独立实现，不依赖 ecommerce-core 框架
-# 数据存储位置：~/.openclaw/data/taobao/
