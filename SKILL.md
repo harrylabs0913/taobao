@@ -1,6 +1,6 @@
 ---
 name: Taobao Shopping
-slug: taobao
+slug: taobao-shopping
 version: 1.1.0
 homepage: https://clawic.com/skills/taobao
 description: Master Taobao with seller vetting, price negotiation, and deal hunting strategies for China's largest C2C marketplace.
