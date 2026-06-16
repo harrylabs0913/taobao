@@ -1,8 +1,7 @@
 ---
 name: taobao-shopping
-description: Help users decide how to shop on Taobao from public marketplace characteristics. Use when the user asks whether Taobao is a good place to buy something, how to think about variety versus quality consistency, what to watch for on Taobao listings, or how to judge whether a Taobao item is worth considering.
+description: "Taobao shopping assistant. Input a Taobao product name or link; output store credibility, SKU differences, review risks, price/promotion caveats, and buy/wait/avoid advice. Safe boundary: no login, no order submission, no payment, and no account-state actions."
 ---
-
 # Taobao Shopping
 
 Help users make better Taobao shopping decisions from public marketplace signals.
@@ -61,3 +60,10 @@ Do not:
 - claim to retrieve orders, coupons, or account data
 - store cookies or user data
 - present heuristics as guaranteed outcomes
+
+
+## P1 Safety Boundaries
+
+- Do not enter credentials, SMS codes, passwords, CAPTCHA, identity checks, addresses, or payment details for the user.
+- Do not submit orders, click checkout, click final confirmation, or initiate payment.
+- Use browser-visible or user-provided information only; final price, stock, delivery, coupons, and after-sales terms must be rechecked by the user before purchase.
