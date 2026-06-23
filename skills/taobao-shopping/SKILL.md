@@ -3,7 +3,7 @@ name: taobao-shopping
 slug: taobao-shopping
 version: 2.0.0
 homepage: https://clawic.com/skills/taobao-shopping
-description: Navigate Taobao (淘宝) with expert shopping strategies, seller verification, and browser-based product search, reviews, price comparison, and cart operations. Supports logged-in workflows for personalized results while keeping checkout/payment for user control.
+description: Navigate Taobao (淘宝) with expert shopping strategies, seller verification, public product search, reviews, price comparison, SKU risk checks, and cart-ready guidance. Safe default: public visible information only; login, address, checkout, order submission, and payment stay user-controlled.
 metadata:
   clawdbot:
     emoji: "🛍️"
@@ -14,7 +14,7 @@ metadata:
 
 # Taobao Shopping
 
-Help users shop smarter on Taobao with expert strategies, seller verification, and browser-based product search, reviews, price comparison, and cart operations.
+Help users shop smarter on Taobao with expert strategies, seller verification, public product search, reviews, price comparison, SKU risk checks, and cart-ready guidance.
 
 ## When to Use
 
@@ -38,13 +38,12 @@ User wants to shop on Taobao (淘宝), China's largest C2C/B2C marketplace. Agen
 | **Browse** | Optional | Browse categories, trending items, recommendations |
 | **Product Detail** | Optional | View specs, images, pricing, promotions |
 | **Compare** | Optional | Compare prices across sellers/variants |
-| **Add to Cart** | ✅ Required | Add items to shopping cart |
-| **View Cart** | ✅ Required | Review cart contents, quantities |
-| **Apply Coupons** | ✅ Required | Check and apply available coupons |
-| **Generate Order Preview** | ✅ Required | Fill address, select shipping, calculate final price |
-| **Payment** | ❌ Blocked | User must complete payment manually |
+| **Cart Guidance** | User-controlled | Explain how to add the confirmed SKU manually or stop before changing cart state. |
+| **Visible Coupon Notes** | No | Summarize visible coupon/promo terms; account-only coupons are user-only. |
+| **Address / Checkout / Order Preview** | User-only | Do not select address, enter checkout, submit order, or generate private order state. |
+| **Payment** | User-only | User must complete payment manually. |
 
-**Important**: All checkout operations stop before payment. User retains full control over final purchase decision and payment execution.
+**Important**: Default operation stops before login, cart changes, checkout, address selection, order submission, and payment. User retains full control over private account state and purchase execution.
 
 ## Workflow
 
@@ -61,21 +60,11 @@ User wants to shop on Taobao (淘宝), China's largest C2C/B2C marketplace. Agen
 3. **Seller Verification** - Confirm 天猫/企业店/个人店 status
 4. **Final Price Check** - Calculate 到手价 after all discounts
 
-### Phase 3: Cart & Pre-Order (Agent-Assisted with Login)
-1. **Add to Cart** - Agent adds item to cart (requires login)
-2. **Cart Review** - Agent shows cart contents, quantities, subtotal
-3. **Coupon Application** - Agent checks and applies best coupons
-4. **Address Selection** - Agent confirms delivery address
-5. **Shipping Options** - Agent shows available delivery methods
-6. **Order Summary** - Agent generates complete order preview
+### Phase 3: User Handoff
+1. **Cart-ready guidance** - Agent summarizes the confirmed SKU, visible price, seller risk, and promo caveats.
+2. **Manual checks** - User verifies final payable amount, address-based delivery, coupon eligibility, stock, return policy, invoice/warranty, checkout, order submission, and payment.
 
-### Phase 4: Checkout (User-Controlled)
-1. **Handoff** - Agent presents final order details
-2. **User Review** - User confirms all details are correct
-3. **Payment** - ⚠️ **User completes payment manually**
-4. **Confirmation** - User shares order confirmation with agent if desired
-
-**Agent Boundary**: Stops at Phase 3. Never executes payment or final order submission.
+**Agent Boundary**: Stops before login-required account state, address selection, checkout, final order submission, and payment.
 
 ## Core Rules
 
@@ -168,8 +157,8 @@ Follow this escalation path:
 User: "帮我买 iPhone 手机壳"
   ↓
 Step 1: Confirm Intent
-  "我来帮你搜索 iPhone 手机壳，对比选项，加入购物车。
-   最后需要你确认订单并完成支付。可以吗？"
+  "我来帮你搜索 iPhone 手机壳，对比选项，核对店铺和规格。
+   登录、加购、结算、提交订单和支付需要你手动完成。"
   ↓
 Step 2: Discovery Phase (No login required)
   - Search Taobao for "iPhone 手机壳"
@@ -184,29 +173,15 @@ Step 3: Selection Phase (No login required)
   - Confirm variant/specs
   - Show final price
   ↓
-Step 4: Cart Phase (⚠️ Requires login)
-  "接下来需要登录你的淘宝账号才能加入购物车，
-   请确认是否继续？"
-  - If yes: proceed with browser automation
-  - If no: provide manual instructions
-  ↓
-Step 5: Order Generation (Requires login)
-  - Add to cart
-  - Apply coupons
-  - Select address
-  - Calculate final price
-  - Generate order preview
-  ↓
-Step 6: Handoff (User-controlled)
-  "订单已准备好，请检查：
-   [订单详情摘要]
+Step 4: Handoff (User-controlled)
+  "我已经整理好下单前检查项：
+   [商品/SKU/店铺/价格/风险摘要]
    
-   👉 请手动完成支付：
+   👉 请手动完成：
    1. 打开淘宝 App
-   2. 进入购物车
-   3. 点击结算
-   4. 确认地址和优惠券
-   5. 提交订单并支付"
+   2. 核对规格、券后价和库存
+   3. 核对地址、运费、退换和发票/保修
+   4. 自行决定是否加入购物车、结算、提交订单并支付"
 ```
 
 ### Browser Automation Rules
@@ -222,37 +197,23 @@ Step 6: Handoff (User-controlled)
 - Store type badge
 - Rating and review count
 - Available variants
-- Coupon information
+- Visible coupon information
 - Delivery estimate
 
 **Stop conditions:**
 - Before any payment screen
 - When CAPTCHA appears (hand to user)
-- When login is required (ask first)
+- When login or account state is required
 - When price differs significantly from expected
 
 ### Login Handling
 
-**Option A: User already logged in (Chrome profile)**
-```
-openclaw browser navigates to Taobao
-If user profile has active session → proceed
-If session expired → prompt user to login manually first
-```
-
-**Option B: User provides login via secure method**
-```
-⚠️ Never ask for password in chat
-Guide user tologin in their browser first
-Then agent takes over with active session
-```
-
-**Option C: Manual mode (no login)**
+**Manual mode (default, no login)**
 ```
 Agent provides:
 - Exact search keywords
 - Product links
-- Coupon codes to apply
+- Visible coupon/promo notes
 - Step-by-step manual instructions
 User executes manually
 ```
@@ -262,19 +223,19 @@ User executes manually
 ### Do:
 - Focus on seller verification and store type
 - Explain trade-offs clearly (variety vs. consistency)
-- Stay honest about not doing account-state operations without login
+- Stay honest about not doing account-state operations
 - Always announce before browser actions
 - Snapshot key information for user review
 - Stop before any payment screen
-- Ask for confirmation before login-required actions
+- Stop when login, cart, address, checkout, order, or payment appears
 
 ### Do Not:
-- Pretend to log in without user consent
+- Pretend to log in or use account-state data
 - Claim to retrieve orders, coupons, or account data without login
-- Store cookies or user data without explicit permission
+- Store cookies or user data
 - Present heuristics as guaranteed outcomes
 - Complete payment for user
-- Overstep into checkout without user confirmation
+- Enter checkout, address, final order, or payment flows
 
 ## Common Traps
 

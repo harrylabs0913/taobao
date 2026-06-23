@@ -15,11 +15,11 @@ Taobao browser automation follows a phased approach with clear boundaries betwee
 | View product details | No | Public product pages |
 | Read reviews | No | Public review data |
 | Compare prices | No | Public price information |
-| Add to cart | Yes | Requires active session |
-| View cart | Yes | Requires active session |
-| Apply coupons | Yes | Requires active session |
-| Generate order preview | Yes | Requires active session |
-| Payment | Blocked | User only |
+| Add to cart | User-only by default | Requires active session; provide manual guidance instead |
+| View cart | User-only by default | Private account state |
+| Apply coupons | User-only by default | Private account state |
+| Address / checkout / order preview | User-only | Do not enter checkout or address flows |
+| Payment | User-only | User only |
 
 ## Browser Extraction Order
 
@@ -72,36 +72,22 @@ When extracting data from Taobao pages, follow this priority:
 - Return policy
 - Shipping cost
 
-### Phase 3: Cart & Pre-Order
-
-**Actions:**
-- Confirm login status
-- Select product variant
-- Add to cart
-- Navigate to cart page
-- Review cart contents
-- Check available coupons
-- Select delivery address
-- Calculate final price
+### Phase 3: Cart-Ready Handoff
 
 **Key Data Points:**
-- Cart subtotal
-- Applied coupons
-- Shipping fee
-- Final price
-- Delivery address
-- Estimated delivery date
-
-### Phase 4: Checkout Handoff
+- Confirmed product and SKU
+- Visible price and promo caveats
+- Seller trust and review risks
+- Manual checks for final payable amount, stock, address-based delivery, coupons, return policy, invoice, warranty, checkout, and payment
 
 **Actions:**
-- Present complete order summary
-- Stop before payment screen
-- Provide manual checkout instructions
+- Present cart-ready summary from public evidence
+- Stop before login, cart change, checkout, address, order, or payment screen
+- Provide manual next-step instructions
 
 **Never:**
 - Enter payment information
-- Click final submit button
+- Click checkout, settlement, final submit, or order buttons
 - Complete transaction
 
 ## Error Handling
@@ -114,9 +100,9 @@ When CAPTCHA appears:
 
 ### Login Required
 When login is required:
-1. Ask user for confirmation
-2. Provide login options
-3. Never ask for password in chat
+1. Stop automation
+2. Tell the user the next step is account-state/private
+3. Never ask for password, SMS code, CAPTCHA, identity, address, or payment details in chat
 
 ### Price Mismatch
 When displayed price differs from expected:
@@ -134,7 +120,7 @@ When selected variant is out of stock:
 
 1. **Never store credentials**
 2. **Never complete payment**
-3. **Always ask before login-required actions**
+3. **Stop before login-required account-state actions**
 4. **Snapshot key data for verification**
 5. **Provide clear handoff instructions**
 
@@ -160,17 +146,8 @@ Agent:
 User: 买白色的
 
 Agent:
-1. "需要登录淘宝账号才能加入购物车，是否继续？"
-
-User: 好的
-
-Agent:
-1. Checks login status
-2. Selects white variant
-3. Adds to cart
-4. Applies available coupons
-5. Generates order preview
-6. "订单已准备好，请手动完成支付..."
+1. Summarizes the confirmed SKU, seller risk, visible price, and promo caveats
+2. Lists manual checks before the user decides to add to cart, checkout, submit, or pay
 ```
 
 ## Related Files
