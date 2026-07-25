@@ -1,6 +1,6 @@
 ---
 name: taobao-shopping
-slug: taobao-shopping
+slug: taobao
 displayName: Taobao Shopping
 version: 2.1.3
 homepage: https://clawic.com/skills/taobao-shopping
