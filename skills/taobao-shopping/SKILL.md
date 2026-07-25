@@ -1,9 +1,10 @@
 ---
 name: taobao-shopping
 slug: taobao-shopping
-version: 2.0.0
+displayName: Taobao Shopping
+version: 2.1.3
 homepage: https://clawic.com/skills/taobao-shopping
-description: Navigate Taobao (淘宝) with expert shopping strategies, seller verification, public product search, reviews, price comparison, SKU risk checks, and cart-ready guidance. Safe default: public visible information only; login, address, checkout, order submission, and payment stay user-controlled.
+description: Taobao shopping decision support using public listings, seller verification, reviews, price comparison, SKU risk checks, and manual pre-purchase guidance. No login, account-state, cart, coupon, checkout, order, or payment actions.
 metadata:
   clawdbot:
     emoji: "🛍️"
@@ -14,7 +15,7 @@ metadata:
 
 # Taobao Shopping
 
-Help users shop smarter on Taobao with expert strategies, seller verification, public product search, reviews, price comparison, SKU risk checks, and cart-ready guidance.
+Help users make better Taobao shopping decisions using public product pages, seller verification, reviews, price comparison, SKU risk checks, and a manual pre-purchase checklist.
 
 ## When to Use
 
@@ -30,7 +31,7 @@ User wants to shop on Taobao (淘宝), China's largest C2C/B2C marketplace. Agen
 
 ## Capabilities
 
-### Supported Operations (v2.0)
+### Supported Operations (v2.1.3)
 
 | Operation | Auth Required | Description |
 |-----------|---------------|-------------|
@@ -38,7 +39,7 @@ User wants to shop on Taobao (淘宝), China's largest C2C/B2C marketplace. Agen
 | **Browse** | Optional | Browse categories, trending items, recommendations |
 | **Product Detail** | Optional | View specs, images, pricing, promotions |
 | **Compare** | Optional | Compare prices across sellers/variants |
-| **Cart Guidance** | User-controlled | Explain how to add the confirmed SKU manually or stop before changing cart state. |
+| **Manual Purchase Handoff** | User-only | Summarize the confirmed SKU and stop before changing cart state. |
 | **Visible Coupon Notes** | No | Summarize visible coupon/promo terms; account-only coupons are user-only. |
 | **Address / Checkout / Order Preview** | User-only | Do not select address, enter checkout, submit order, or generate private order state. |
 | **Payment** | User-only | User must complete payment manually. |
@@ -52,13 +53,13 @@ User wants to shop on Taobao (淘宝), China's largest C2C/B2C marketplace. Agen
 2. **Filter & Sort** - Apply filters (price range, rating, brand, 天猫优先)
 3. **Compare** - Agent compares top 3-5 options across sellers
 4. **Reviews** - Agent reads user reviews, extracts common pros/cons
-5. **Price Analysis** - Agent checks current price, promotions, coupon availability
+5. **Price Analysis** - Agent checks current visible price and promotion terms; account-only coupons remain user-only
 
 ### Phase 2: Selection (Agent-Assisted)
 1. **Product Detail** - Agent opens selected product page
 2. **Variant Selection** - Confirm color, size, configuration
 3. **Seller Verification** - Confirm 天猫/企业店/个人店 status
-4. **Final Price Check** - Calculate 到手价 after all discounts
+4. **Visible Price Check** - Separate visible price from account-dependent discounts and payment conditions
 
 ### Phase 3: User Handoff
 1. **Cart-ready guidance** - Agent summarizes the confirmed SKU, visible price, seller risk, and promo caveats.
