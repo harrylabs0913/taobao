@@ -1,10 +1,12 @@
-# Browser Workflow for Taobao Shopping
+# Public Browser Workflow for Taobao Shopping
 
-This document describes the browser automation workflow for Taobao shopping operations.
+This document describes the read-only browser workflow for public Taobao research.
 
 ## Overview
 
-Taobao browser automation follows a phased approach with clear boundaries between agent-assisted operations and user-controlled checkout.
+Taobao browsing follows a phased approach that ends before any private account state or purchase action.
+
+**Scope:** Use public pages and user-provided screenshots/details only. Do not log in, use cookies, access account pages, change cart state, apply or claim coupons, select an address, enter checkout, submit an order, or pay.
 
 ## Authentication Requirements
 
@@ -30,7 +32,7 @@ When extracting data from Taobao pages, follow this priority:
 3. **店铺类型** - 天猫/企业店/个人店
 4. **店铺评分** - 描述相符, 服务态度, 物流服务
 5. **销量** - 月销/总销量
-6. **优惠券** - 店铺券, 平台券
+6. **可见优惠信息** - 店铺券/平台券的公开条款；不申请或应用优惠券
 7. **满减活动** - 满X减Y
 8. **规格选项** - 颜色, 尺寸, 版本
 9. **用户评价** - 好评率, 追评, 晒图
@@ -67,7 +69,7 @@ When extracting data from Taobao pages, follow this priority:
 **Key Data Points:**
 - Full product description
 - All available variants
-- Detailed pricing (with coupons)
+- Detailed visible pricing and promotion terms (without applying coupons)
 - Store rating breakdown
 - Return policy
 - Shipping cost
@@ -141,7 +143,7 @@ Agent:
 1. Opens product detail page
 2. Extracts specifications and reviews
 3. Shows variant options (color, model)
-4. Calculates final price with coupons
+4. Separates visible price from account-dependent coupon or payment conditions
 
 User: 买白色的
 

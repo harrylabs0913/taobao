@@ -190,7 +190,7 @@ Step 4: Handoff (User-controlled)
 - "正在搜索..."
 - "正在打开商品页面..."
 - "正在读取用户评价..."
-- "正在加入购物车..."
+- "正在整理公开信息..."
 
 **Snapshot key information:**
 - Product title, price, promotions
